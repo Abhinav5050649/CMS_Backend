@@ -1,5 +1,5 @@
 const express = require(`express`)
-const User = require(`../models/user`)
+const { body, validationResult } = require("express-validator")
 const Contact = require(`../models/contacts`)
 const router = express.Router()
 const fetchUser = require(`../middleware/fetchuser`)
@@ -18,9 +18,11 @@ router.get(`/getallcontacts`, fetchUser, async(req, res) => {
 //normal get method
 router.get(`/getallcontactsnorm`, fetchUser, async(req, res) => {
     try{
-
+        const data = await Contact.find({userId: req.user.id})
+        res.json(data)
     }catch(error){
-
+        console.error(error)
+        res.status(500).send(`Internal Server Error`)
     }
 })
 
@@ -66,7 +68,7 @@ router.post(`/createcontact`, fetchUser, async(req, res) => {
         const saveContact = await use.save()
         res.json(saveContact)
     }catch(error){
-        console.log(error)
+        console.error(error)
         res.status(500).send(`Internal Server Error`)
     }
 })
@@ -74,9 +76,9 @@ router.post(`/createcontact`, fetchUser, async(req, res) => {
 //update a contact
 router.put(`/updatecontact/:id`, fetchUser, async(req, res) => {
     try{
-        
+
     }catch(error){
-        console.log(error)
+        console.error(error)
         res.status(500).send(`Internal Server Error`)
     }
 })
@@ -87,6 +89,7 @@ router.delete(`/deletecontact/:id`, fetchUser, async(req, res) => {
         const data = await Contact.findByIdAndDelete(req.params.id)
         res.json(data)
     }catch(error){
+        console.error(error)
         res.status(500).send(`Internal Server Error`)
     }
 })
