@@ -9,7 +9,7 @@ const { findByIdAndDelete } = require("../models/contacts")
 //add pagination on here
 router.get(`/getallcontacts`, fetchUser, async(req, res) => {
     try{
-
+    
     }catch(error){
         
     }
@@ -29,18 +29,24 @@ router.get(`/getallcontactsnorm`, fetchUser, async(req, res) => {
 //fetches contacts by name
 router.get(`/getcontactbyname`, fetchUser, async(req, res) => {
     try{
-
+        const data = await Contact.findOne({"name": req.body.name})
+        if (!data)  res.status(404).send("Not Found")
+        res.json(data)
     }catch(error){
-        
+        console.error(error)
+        res.status(500).send(`Internal Server Error`)
     }
 })
 
 //fetches contacts by number
 router.get(`/getcontactbynumber`, fetchUser, async(req, res) => {
     try{
-
+        const data = await Contact.findOne({"phoneNumber": req.body.phoneNumber})
+        if (!data)  res.status(404).send("Not Found")
+        res.json(data)
     }catch(error){
-        
+        console.error(error)
+        res.status(500).send(`Internal Server Error`)
     }
 })
 
