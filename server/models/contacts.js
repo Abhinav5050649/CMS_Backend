@@ -3,7 +3,8 @@ const Schema = mongoose.Schema
 
 const conSchema = new Schema({
     userId: {
-
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'user'
     },
     name: {
         type: String, 
