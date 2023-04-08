@@ -46,6 +46,7 @@ router.get(`/getcontactbynumber`, fetchUser, async(req, res) => {
 router.post(`/createcontact`, fetchUser, async(req, res) => {
     try{
         const errors  = validationResult(req)
+
         if (!errors.isEmpty())  return res.status(400).json({errors: errors.array()})
 
         var us, phno, add, email;
@@ -75,7 +76,8 @@ router.put(`/updatecontact/:id`, fetchUser, async(req, res) => {
     try{
         
     }catch(error){
-        
+        console.log(error)
+        res.status(500).send(`Internal Server Error`)
     }
 })
 
