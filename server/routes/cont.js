@@ -5,33 +5,62 @@ const router = express.Router()
 const fetchUser = require(`../middleware/fetchuser`)
 
 
-//add pagination here
-router.get(`/getallcontacts`, async(req, res) => {
+//add pagination on here
+router.get(`/getallcontacts`, fetchUser, async(req, res) => {
 
 })
 
+//normal get method
+router.get(`/getallcontactsnorm`, fetchUser, async(req, res) => {
+    try{
+
+    }
+})
+
 //fetches contacts by name
-router.get(`/getcontactbyname`, async(req, res) => {
+router.get(`/getcontactbyname`, fetchUser, async(req, res) => {
 
 })
 
 //fetches contacts by number
-router.get(`/getcontactbynumber`, async(req, res) => {
-
+router.get(`/getcontactbynumber`, fetchUser, async(req, res) => {
+    
 })
 
 //creates a new contact
-router.post(`/createcontact`, async(req, res) => {
+router.post(`/createcontact`, fetchUser, async(req, res) => {
+    try{
+        const errors  = validationResult(req)
+        if (!errors.isEmpty())  return res.status(400).json({errors: errors.array()})
+        var us, phno, add, email;
+        if (req.body.user)  us = req.body.us 
+        if (req.body.primaryNumber) phno = req.body.primaryNumber
+        if (req.body.address)   add = req.body.address
+        if (req.body.email) email = req.body.email 
 
+        const use = new Contact({
+            "userId": req.user.id,
+            "name": us,
+            "email": email,
+            "phoneNumber": phno,
+            "address": add
+        })
+
+        const saveContact = await use.save()
+        res.json(saveContact)
+    }catch(error){
+        console.log(error)
+        res.status(500).send(`Internal Server Error`)
+    }
 })
 
 //update a contact
-router.put(`/updatecontact/:id`, async(req, res) => {
+router.put(`/updatecontact/:id`, fetchUser, async(req, res) => {
 
 })
 
 //delete a contact
-router.delete(`/deletecontact/:id`, async(req, res) => {
+router.delete(`/deletecontact/:id`, fetchUser, async(req, res) => {
 
 })
 
