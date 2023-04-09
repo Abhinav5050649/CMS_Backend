@@ -9,9 +9,14 @@ const { findByIdAndDelete } = require("../models/contacts")
 //add pagination on here
 router.get(`/getallcontacts`, fetchUser, async(req, res) => {
     try{
-    
+        const limitValue = req.query.limit || 2;
+        const skipValue = req.query.skip || 0;
+        const data = await Contact.find().limit(limitValue).skip(skipValue);
+
+        res.status(200).json(data);
     }catch(error){
-        
+        console.error(error)
+        res.status(500).send(`Internal Server Error`)
     }
 })
 
@@ -19,7 +24,7 @@ router.get(`/getallcontacts`, fetchUser, async(req, res) => {
 router.get(`/getallcontactsnorm`, fetchUser, async(req, res) => {
     try{
         const data = await Contact.find({userId: req.user.id})
-        res.json(data)
+        res.status(200).json(data);
     }catch(error){
         console.error(error)
         res.status(500).send(`Internal Server Error`)
@@ -29,9 +34,12 @@ router.get(`/getallcontactsnorm`, fetchUser, async(req, res) => {
 //fetches contacts by name
 router.get(`/getcontactbyname`, fetchUser, async(req, res) => {
     try{
-        const data = await Contact.findOne({"name": req.body.name})
+        let data = await Contact.find({userId: req.user.id})
         if (!data)  res.status(404).send("Not Found")
-        res.json(data)
+
+        data = await Contact.findOne({"name": req.body.name})
+
+        res.status(200).json(data);
     }catch(error){
         console.error(error)
         res.status(500).send(`Internal Server Error`)
@@ -41,9 +49,12 @@ router.get(`/getcontactbyname`, fetchUser, async(req, res) => {
 //fetches contacts by number
 router.get(`/getcontactbynumber`, fetchUser, async(req, res) => {
     try{
-        const data = await Contact.findOne({"phoneNumber": req.body.phoneNumber})
+        let data = await Contact.find({userId: req.user.id})
         if (!data)  res.status(404).send("Not Found")
-        res.json(data)
+
+        data = await Contact.findOne({"phoneNumber": req.body.phoneNumber})
+
+        res.status(200).json(data);
     }catch(error){
         console.error(error)
         res.status(500).send(`Internal Server Error`)
@@ -57,7 +68,7 @@ router.post(`/createcontact`, fetchUser, async(req, res) => {
 
         if (!errors.isEmpty())  return res.status(400).json({errors: errors.array()})
 
-        var us, phno, add, email;
+        var us = "", phno = "", add = "", email = "";
         if (req.body.user)  us = req.body.us 
         if (req.body.primaryNumber) phno = req.body.primaryNumber
         if (req.body.address)   add = req.body.address
@@ -72,7 +83,7 @@ router.post(`/createcontact`, fetchUser, async(req, res) => {
         })
 
         const saveContact = await use.save()
-        res.json(saveContact)
+        res.status(200).json(saveContact);
     }catch(error){
         console.error(error)
         res.status(500).send(`Internal Server Error`)
@@ -82,7 +93,7 @@ router.post(`/createcontact`, fetchUser, async(req, res) => {
 //update a contact
 router.put(`/updatecontact/:id`, fetchUser, async(req, res) => {
     try{
-
+        
     }catch(error){
         console.error(error)
         res.status(500).send(`Internal Server Error`)
@@ -93,7 +104,7 @@ router.put(`/updatecontact/:id`, fetchUser, async(req, res) => {
 router.delete(`/deletecontact/:id`, fetchUser, async(req, res) => {
     try{
         const data = await Contact.findByIdAndDelete(req.params.id)
-        res.json(data)
+        res.status(200).json(data);
     }catch(error){
         console.error(error)
         res.status(500).send(`Internal Server Error`)
