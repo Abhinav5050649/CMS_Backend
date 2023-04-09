@@ -68,19 +68,15 @@ router.post(`/createcontact`, fetchUser, async(req, res) => {
 
         if (!errors.isEmpty())  return res.status(400).json({errors: errors.array()})
 
-        var us = "", phno = "", add = "", email = "";
-        if (req.body.user)  us = req.body.us 
-        if (req.body.primaryNumber) phno = req.body.primaryNumber
-        if (req.body.address)   add = req.body.address
-        if (req.body.email) email = req.body.email 
+        const {name, phoneNumber, email, address} = req.body
+        let data = {}
+        data["userId"] = req.user.id
+        if (name)   data["name"]    =   name
+        if (phoneNumber)    data["phoneNumber"] =   phoneNumber
+        if (email)  data["email"]   =   email
+        if (address)    data["address"] =   address
 
-        const use = new Contact({
-            "userId": req.user.id,
-            "name": us,
-            "email": email,
-            "phoneNumber": phno,
-            "address": add
-        })
+        const use = new Contact(data)
 
         const saveContact = await use.save()
         res.status(200).json(saveContact);
@@ -93,7 +89,22 @@ router.post(`/createcontact`, fetchUser, async(req, res) => {
 //update a contact
 router.put(`/updatecontact/:id`, fetchUser, async(req, res) => {
     try{
+        const {name, phoneNumber, email, address} = req.body
+        let data = await Contact.findById(req.user.id)
+
+        if (name)   data["name"]    =   name
+        if (phoneNumber)    data["phoneNumber"] =   phoneNumber
+        if (email)  data["email"]   =   email
+        if (address)    data["address"] =   address
         
+        data = await Contact.findByIdAndUpdate(
+            {id: req.user.id},
+            {$set: data},
+            {new: true}
+        )
+
+        res.status(200).json(data)
+
     }catch(error){
         console.error(error)
         res.status(500).send(`Internal Server Error`)
