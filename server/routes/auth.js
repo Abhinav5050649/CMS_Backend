@@ -8,6 +8,7 @@ const fetchUser = require("../middleware/fetchuser");
 
 const JWT_SECRET = "contactManager";
 
+//create user --> works
 router.post(`/createuser`, 
 [
     body("name").isLength({min: 3}),
@@ -58,6 +59,7 @@ router.post(`/createuser`,
     }
 );
 
+//for login --> works
 router.post(`/login`, 
 [
     body("email").isEmail(),

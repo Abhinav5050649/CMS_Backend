@@ -1,7 +1,7 @@
 const mongoose = require(`mongoose`)
 require(`dotenv`).config()
 
-mongooseURL = process.env.DB
+const mongooseURL = `mongodb+srv://${process.env.DB_username}:${process.env.DB_password}@cluster0.xco2bpk.mongodb.net/testdb?retryWrites=true&w=majority`
 
 const connectToMongo = () => {
     mongoose.connect(mongooseURL, () => {

@@ -3,7 +3,7 @@ const JWT_SECRET = `contactManager`
 
 const fetchUser = (req, res, next) => {
     try{
-        const token = req.headers(`authtoken`)
+        const token = req.header(`authtoken`)
 
         if (!token) res.status(401).send({error: `Faulty Authentication`})
 
