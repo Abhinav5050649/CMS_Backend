@@ -70,7 +70,7 @@ A JWT Token will be generated and sent as response after successful login of Use
 ### The API endpoints given below work after logging in as a User. You must attach the authtoken generated after logging in, in the headers section of the request as the token's presence will be checked by each of the below api calls with the help of a middleware method called fetchUser, present in ./middleware/fetchuser.js file in the server directory. The method will not only verify your jwt token, but will also send you the user details in the form of req.user after proper verification of token. Also, a userId parameter will be associated with all the objects of Contact Schema which will link User to Contact as a result of the fetchUser method
 
 
-#### Get all contacts with pagination
+#### Get all contacts (WITH PAGINATION)
 
 ```http
   GET /api/cont/getallcontacts
@@ -81,7 +81,7 @@ A JWT Token will be generated and sent as response after successful login of Use
 | `authtoken`| `string` | **Required**. authtoken has to be present in header of request. Upon successful verification, the user will get contacts of user as per pagination configured |
 
 
-#### Get all contacts normally
+#### Get all contacts normally (WITHOUT PAGINATION)
 
 ```http
   GET /api/cont/getallcontactsnorm
