@@ -22,57 +22,6 @@ and type "nodemon index"
 6) You can now start running and testing the Backend!!! 
 
 
-## Database Schemas
-
-### User Schema Definition
-
-const userSchema = new Schema({
-    name: {
-        type: String, 
-        required: true
-    },
-    primaryNumber: {
-        type: String,
-        required: true,
-        unique: true
-    }, 
-    email: {
-        type: String,
-        required: true,
-        unique: true
-    },
-    password: {
-        type: String, 
-        required: true
-    }
-})
-
-### Contact Schema Definition
-
-const conSchema = new Schema({
-    userId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'user'
-    },
-    name: {
-        type: String, 
-        required: true
-    },
-    phoneNumber: {
-        type: String, 
-        required: true,
-        unique: true
-    },
-    email: {
-        type: String, 
-        unique: true
-    },
-    address: {
-        type: String
-    }
-})
-
-
 ## API Reference
 
 This is the basic list of api endpoints. I have tried to be as descriptive as possible. 
@@ -118,7 +67,7 @@ A JWT Token will be generated and sent as response after successful creation of 
 A JWT Token will be generated and sent as response after successful login of User
 
 
-### The API endpoints given below work after logging in as a User. You must attach the authtoken generated after logging in, in the headers section of the request as the token's presence will be checked by each of the below api calls with the help of a middleware method called fetchUser, present in ./middleware/fetchuser.js file in the server directory 
+### The API endpoints given below work after logging in as a User. You must attach the authtoken generated after logging in, in the headers section of the request as the token's presence will be checked by each of the below api calls with the help of a middleware method called fetchUser, present in ./middleware/fetchuser.js file in the server directory. The method will not only verify your jwt token, but will also send you the user details in the form of req.user after proper verification of token. Also, a userId parameter will be associated with all the objects of Contact Schema which will link User to Contact as a result of the fetchUser method
 
 
 #### Get all contacts with pagination
