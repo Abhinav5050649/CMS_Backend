@@ -8,7 +8,7 @@ This is the Backend for a Contact Management System made as a part of an assignm
 
 MongoDB, NodeJs, ExpressJs
 
-Note: JWT Authentication has been implemented in the project as well
+Note: JWT Authentication and Authorization has been implemented in the project as well
 
 
 ## How To Run the Backend
